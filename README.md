@@ -115,6 +115,60 @@ uac_bypass/
 
 ## 🔄 Changelog
 
+## [0.3.3] - 2025-01-27
+### Aggiunto
+- Sistema avanzato di elevazione privilegi per utenti standard:
+  * Token stealing da processi privilegiati
+  * Exploitation di servizi vulnerabili
+  * Manipolazione token di sistema
+  * Bypass controlli di integrità
+  * Recovery automatico
+
+### Sicurezza
+- Tecniche avanzate di privilege escalation:
+  * Analisi processi SYSTEM
+  * Estrazione token privilegiati
+  * Modifica security descriptor
+  * Manipolazione SID e gruppi
+  * Impersonation sicura
+
+### Miglioramenti
+- Supporto completo per utenti non-admin
+- Sistema di recovery multi-step
+- Gestione errori avanzata
+- Logging dettagliato operazioni
+- Protezioni anti-detection
+
+## [0.3.2] - 2025-01-27
+### Aggiunto
+- Sistema di comunicazione ibrido con shared memory:
+  * Implementazione shared memory con cifratura AES
+  * Fallback automatico a named pipes
+  * Gestione errori robusta per entrambi i metodi
+  * Sistema di sincronizzazione avanzato
+  * Protezione memoria condivisa
+
+### Miglioramenti
+- Performance di comunicazione ottimizzate
+- Maggiore sicurezza nella trasmissione dati
+- Sistema di recovery automatico in caso di errori
+- Supporto per multi-processo migliorato
+- Logging dettagliato del sistema di comunicazione
+
+## [0.3.1] - 2025-01-27
+### Aggiunto
+- Nuovo metodo di bypass tramite wsreset.exe:
+  * Implementazione completa del bypass usando wsreset.exe
+  * Sistema di backup e ripristino del registro dedicato
+  * Gestione errori avanzata e logging dettagliato
+  * Verifica integrità del processo wsreset.exe
+  * Controlli di sicurezza aggiuntivi
+
+### Miglioramenti
+- Ristrutturazione del sistema di gestione metodi di bypass
+- Migliorata la gestione dei backup del registro
+- Logging più dettagliato per le operazioni di bypass
+
 ### [0.3.0] - 2025-01-27
 #### Aggiunto
 - Implementazione COM elevation con moniker
