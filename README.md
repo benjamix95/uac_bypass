@@ -115,7 +115,7 @@ uac_bypass/
 - Service manipulation avanzata
 - Sistema gestione errori completo
 
-### [0.2.0] - 2025-01-27
+### [0.2.0] - 2024-09-14
 #### Sicurezza
 - Verifica firma digitale processi
 - Gestione sicura registro
@@ -136,7 +136,7 @@ uac_bypass/
 - Ottimizzazione risorse
 - Pulizia automatica file temporanei
 
-### [0.1.0] - 2025-01-27
+### [0.1.0] - 2024-04-05
 #### Iniziale
 - Prima release del progetto
 - Bypass UAC base
