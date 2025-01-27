@@ -74,20 +74,75 @@ uac_bypass/
 - [Dettagli Tecnici](docs/technical_details.md)
 - [Note di Sicurezza](docs/security_notes.md)
 
-## 🔄 Versioning
-- v0.2.0 - Miglioramenti Sicurezza e Stabilità
-  - Verifica firma digitale dei processi
-  - Gestione sicura del registro
-  - Migliorata gestione delle risorse
-  - Sistema di logging avanzato
-  - Controlli di sicurezza estesi
-  - Backup e ripristino automatico
+## 🔄 Changelog
 
-- v0.1.0 - Implementazione iniziale
-  - Setup struttura progetto base
-  - Implementazione logger
-  - Sistema di bypass UAC base
-  - Documentazione tecnica
+### [0.3.0] - 2025-01-27
+#### Aggiunto
+- Implementazione COM elevation con moniker
+- Sistema di protezione DLL e verifica firma
+- Detection evasion avanzato
+- Unit testing con Google Test
+- SecurityUtils per gestione sicurezza
+- Anti-debug e anti-VM protection
+- Process hollowing e thread manipulation
+- Memory protection e encryption
+- Sistema di verifica integrità
+- Payload DLL per elevazione privilegi
+- Comunicazione sicura via pipe
+- Nuovi metodi di bypass (computerdefaults.exe, sdclt.exe, eventvwr.exe)
+- Sistema di gestione bypass modulare
+
+#### Sicurezza
+- Sistema di protezione memoria
+- Controlli anti-debugging avanzati
+- Evasione da sandbox
+- Protezione contro memory dumping
+- Cifratura regioni memoria sensibili
+- Sistema rilevamento VM completo
+- Tecniche di evasione VM avanzate
+
+#### Tecnico
+- Ottimizzazione gestione COM
+- Sistema di logging avanzato
+- Controlli integrità runtime
+- Virtualizzazione codice completa
+- Sandboxing avanzato
+- Test di fuzzing e stress
+- Virtualizzazione hardware con VT-x/AMD-V
+- Token stealing avanzato
+- Named pipe impersonation
+- RPC elevation sicura
+- Service manipulation avanzata
+- Sistema gestione errori completo
+
+### [0.2.0] - 2025-01-27
+#### Sicurezza
+- Verifica firma digitale processi
+- Gestione sicura registro
+- Verifica integrità file
+- Sicurezza risorse COM
+- Controlli sicurezza registro
+
+#### Correzioni
+- Risolto problema IsProcessElevated
+- Corretto uso percorsi System32
+- Aggiunto timeout thread remoti
+- Verifica codici uscita processi
+
+#### Miglioramenti
+- Backup/ripristino registro completo
+- Gestione registro avanzata
+- Logging dettagliato
+- Ottimizzazione risorse
+- Pulizia automatica file temporanei
+
+### [0.1.0] - 2025-01-27
+#### Iniziale
+- Prima release del progetto
+- Bypass UAC base
+- Sistema logging base
+- Gestione processi base
+- Elevazione privilegi base
 
 ## ⚖️ Licenza
 Questo progetto è rilasciato per scopi educativi. Non è consentito l'uso in produzione o per scopi malevoli.
