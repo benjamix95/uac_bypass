@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "Logger.h"
 #include "Config.h"
+#include "SharedMemoryManager.h"
 
 namespace uac_bypass {
 
@@ -57,14 +58,17 @@ private:
     
     // Membri
     Logger& logger;
+    SharedMemoryManager& sharedMemoryManager;
     bool initialized;
     HANDLE hPipe;
     PayloadData data;
+    bool useSharedMemory;
     
     // Costanti
+    static const WCHAR* SHARED_MEM_NAME;
+    static const WCHAR* PIPE_NAME;
     static const DWORD PIPE_BUFFER_SIZE = 4096;
     static const DWORD PIPE_TIMEOUT = 5000;
-    static const WCHAR* PIPE_NAME;
 };
 
 // Funzioni esportate dalla DLL

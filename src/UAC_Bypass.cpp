@@ -66,6 +66,43 @@ bool CheckSystemRequirements() {
         return false;
     }
 
+    // Verifica che siamo in un contesto non elevato
+    BOOL isElevated = FALSE;
+    HANDLE hToken = NULL;
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
+        TOKEN_ELEVATION elevation;
+        DWORD size = sizeof(TOKEN_ELEVATION);
+        if (GetTokenInformation(hToken, TokenElevation, &elevation, sizeof(elevation), &size)) {
+            isElevated = elevation.TokenIsElevated;
+        }
+        CloseHandle(hToken);
+    }
+
+    if (isElevated) {
+        logger.logError(L"Il tool deve essere eseguito senza privilegi di amministratore");
+        return false;
+    }
+
+    // Verifica appartenenza al gruppo Administrators
+    BOOL isMemberOfAdmin = FALSE;
+    SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+    PSID AdministratorsGroup;
+    if (AllocateAndInitializeSid(&NtAuthority, 2,
+        SECURITY_BUILTIN_DOMAIN_RID,
+        DOMAIN_ALIAS_RID_ADMINS,
+        0, 0, 0, 0, 0, 0,
+        &AdministratorsGroup)) {
+        if (!CheckTokenMembership(NULL, AdministratorsGroup, &isMemberOfAdmin)) {
+            isMemberOfAdmin = FALSE;
+        }
+        FreeSid(AdministratorsGroup);
+    }
+
+    if (!isMemberOfAdmin) {
+        logger.logError(L"L'utente deve essere membro del gruppo Administrators");
+        return false;
+    }
+
     logger.logInfo(L"Requisiti di sistema verificati con successo");
     return true;
 }

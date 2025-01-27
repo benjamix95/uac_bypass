@@ -5,13 +5,59 @@ Questo documento descrive i dettagli tecnici dell'implementazione del bypass UAC
 
 ## Componenti Principali
 
-### 1. PayloadDLL
+### 1. TokenElevation
+- Sistema avanzato di privilege escalation:
+  * Token stealing da processi privilegiati
+  * Analisi e sfruttamento di servizi vulnerabili
+  * Manipolazione avanzata dei token di sistema
+  * Modifica security descriptors
+  * Sistema di recovery multi-step
+- Tecniche di privilege escalation:
+  * Enumerazione processi SYSTEM
+  * Duplicazione e modifica token
+  * Bypass controlli di integrità
+  * Impersonation sicura
+  * Injection in servizi privilegiati
+- Sistema di protezione:
+  * Verifica integrità dei token
+  * Validazione privilegi estratti
+  * Monitoraggio operazioni sensibili
+  * Cleanup automatico risorse
+  * Logging dettagliato operazioni
+
+### 2. PayloadDLL
 - Sistema di elevazione privilegi via DLL injection
-- Comunicazione sicura tramite named pipes
+- Comunicazione sicura tramite sistema ibrido:
+  * Shared memory con cifratura AES
+  * Fallback automatico a named pipes
+  * Sincronizzazione avanzata tra processi
+  * Performance ottimizzate
+  * Recovery automatico
 - Verifica integrità runtime e firma digitale
 - Protezione contro manipolazione e debugging
 - Gestione sicura dei token e privilegi
 - Sistema di cleanup automatico
+
+### 1.1 Sistema di Comunicazione Inter-Process
+- Shared Memory:
+  * Allocazione sicura della memoria condivisa
+  * Cifratura AES end-to-end dei dati
+  * Security descriptors personalizzati
+  * Gestione sincronizzazione con mutex
+  * Eventi per notifiche read/write
+  * Protezione contro race conditions
+- Named Pipes (Fallback):
+  * Comunicazione bidirezionale sicura
+  * Modalità messaggio con buffer ottimizzati
+  * ACL restrittivi per sicurezza
+  * Timeout e gestione errori
+  * Cleanup automatico delle risorse
+- Sistema di Recovery:
+  * Rilevamento automatico fallimenti
+  * Switchover trasparente tra metodi
+  * Gestione stati inconsistenti
+  * Logging dettagliato degli errori
+  * Reinizializzazione automatica
 
 ### 2. VMDetection
 - Sistema avanzato di rilevamento macchine virtuali:
@@ -209,10 +255,26 @@ Questo documento descrive i dettagli tecnici dell'implementazione del bypass UAC
 - Anti-VM checks avanzati
 
 ### 2. ProcessElevator
-- Gestisce l'elevazione dei privilegi
-- Implementa la logica di bypass UAC
-- Gestisce la manipolazione del registro
-- Effettua l'iniezione DLL
+- Gestisce l'elevazione dei privilegi attraverso diversi metodi:
+  * Bypass tramite fodhelper.exe
+  * Bypass tramite computerdefaults.exe
+  * Bypass tramite sdclt.exe
+  * Bypass tramite eventvwr.exe
+  * Bypass tramite wsreset.exe
+  * Bypass tramite altri metodi supportati
+- Implementa la logica di bypass UAC con:
+  * Gestione automatica del backup registro
+  * Verifica integrità dei processi target
+  * Sistema di recovery in caso di errori
+  * Logging dettagliato delle operazioni
+- Gestisce la manipolazione del registro:
+  * Backup sicuro delle chiavi modificate
+  * Ripristino automatico in caso di errori
+  * Validazione delle modifiche
+- Effettua l'iniezione DLL con:
+  * Verifica integrità del payload
+  * Protezione memoria durante l'iniezione
+  * Monitoraggio del processo target
 
 #### Funzionalità Chiave:
 - `ElevateCurrentProcess()`: Gestisce il processo di elevazione

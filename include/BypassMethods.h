@@ -17,7 +17,8 @@ enum class BypassMethod {
     EVENT_VIEWER,          // Metodo eventvwr.exe
     DISK_CLEANUP,          // Metodo cleanmgr.exe
     COM_SURROGATE,         // Metodo dllhost.exe
-    SLUI                   // Metodo slui.exe
+    SLUI,                  // Metodo slui.exe
+    WSRESET                // Metodo wsreset.exe
 };
 
 // Struttura per i dettagli del metodo di bypass
@@ -68,6 +69,7 @@ private:
     bool bypassDiskCleanup();
     bool bypassComSurrogate();
     bool bypassSlui();
+    bool bypassWSReset();
     
     // Utility interne
     bool setupRegistry(const BypassDetails& details);

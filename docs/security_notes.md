@@ -21,8 +21,22 @@ Questo documento descrive le considerazioni di sicurezza importanti relative all
 #### 2.2 Validazioni di Sicurezza
 - Verifica integrità sistema pre-operazione
 - Controllo versione Windows
-- Validazione privilegi necessari
-- Verifica stato UAC
+- Verifica che il processo non sia già elevato
+- Verifica appartenenza al gruppo Administrators
+- Controllo stato UAC nel sistema
+- Protezioni anti-debugging e anti-VM
+
+#### 2.2.1 Requisiti di Esecuzione
+- Il tool deve essere avviato SENZA privilegi amministrativi
+- L'utente deve essere membro del gruppo Administrators
+- UAC deve essere attivo nel sistema
+- No esecuzione tramite "Esegui come amministratore"
+
+#### 2.2.2 Verifica Privilegi
+- Controllo del token di sicurezza all'avvio
+- Verifica assenza privilegi elevati iniziali
+- Validazione appartenenza gruppo Administrators
+- Monitoraggio cambiamenti privilegi durante l'esecuzione
 
 #### 2.3 Logging e Audit
 - Logging dettagliato di tutte le operazioni
@@ -31,6 +45,13 @@ Questo documento descrive le considerazioni di sicurezza importanti relative all
 - Log degli accessi ai processi
 
 ### 3. Best Practices per l'Utilizzo
+
+#### 3.0 Prerequisiti di Esecuzione
+- NON eseguire il tool con privilegi amministrativi
+- Verificare appartenenza al gruppo Administrators
+- Assicurarsi che UAC sia abilitato
+- Utilizzare un account utente locale
+- Evitare l'uso con account di dominio
 
 #### 3.1 Ambiente di Test
 - Utilizzare solo su macchine di test dedicate
